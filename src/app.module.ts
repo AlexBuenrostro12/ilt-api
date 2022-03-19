@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TacosModule } from './tacos/tacos.module';
 
 @Module({
-  imports: [],
+  imports: [TacosModule],
   controllers: [AppController],
   providers: [AppService],
 })
