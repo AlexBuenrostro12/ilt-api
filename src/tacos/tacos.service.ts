@@ -1,41 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { TACOS_TYPE } from 'src/shared/enums/tacos.enum';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateTacoDto } from './dto/create-taco.dto';
+import { UpdateTacoDto } from './dto/update-taco.dto';
 import { Tacos } from './entities/tacos.entity';
 
 @Injectable()
 export class TacosService {
-  private tacos: Tacos[] = [
-    {
-      id: 1,
-      orderDetailId: 1,
-      type: TACOS_TYPE.ADOBADA,
-      price: 12,
-    },
-  ];
+  constructor(
+    @InjectRepository(Tacos)
+    private readonly tacosRepository: Repository<Tacos>,
+  ) {}
 
   findAll() {
-    return this.tacos;
+    return this.tacosRepository.find();
   }
 
-  findOne(id: string) {
-    return this.tacos.find((item) => item.id === +id);
-  }
+  async findOne(id: string) {
+    const taco = await this.tacosRepository.findOne(id);
 
-  create(createTacoDto: any) {
-    this.tacos.push(createTacoDto);
-  }
-
-  update(id: string, updateTacoDto: any) {
-    const existingTaco = this.findOne(id);
-    if (existingTaco) {
-      // update the existing entity
+    if (!taco) {
+      throw new NotFoundException(`Taco #${id} not found`);
     }
+
+    return taco;
   }
 
-  remove(id: string) {
-    const coffeeIndex = this.tacos.findIndex((item) => item.id === +id);
-    if (coffeeIndex >= 0) {
-      this.tacos.splice(coffeeIndex, 1);
+  create(createTacoDto: CreateTacoDto) {
+    const taco = this.tacosRepository.create(createTacoDto);
+
+    return this.tacosRepository.save(taco);
+  }
+
+  async update(id: string, updateTacoDto: UpdateTacoDto) {
+    const taco = await this.tacosRepository.preload({
+      id: +id,
+      ...updateTacoDto,
+    });
+
+    if (!taco) {
+      throw new NotFoundException(`Taco #${id} not found`);
     }
+
+    return this.tacosRepository.save(taco);
+  }
+
+  async remove(id: string) {
+    const taco = await this.findOne(id);
+    return this.tacosRepository.remove(taco);
   }
 }
