@@ -13,11 +13,15 @@ export class OrdersService {
   ) {}
 
   findAll() {
-    return this.ordesRepository.find();
+    return this.ordesRepository.find({
+      relations: ['tacos'],
+    });
   }
 
   async findOne(id: string) {
-    const order = await this.ordesRepository.findOne(id);
+    const order = await this.ordesRepository.findOne(id, {
+      relations: ['tacos'],
+    });
 
     if (!order) {
       throw new NotFoundException(`order #${id} not found`);
