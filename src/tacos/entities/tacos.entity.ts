@@ -1,13 +1,19 @@
 import { TACOS_TYPE } from 'src/shared/enums/tacos.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Ingredients } from './ingredients.entity';
+import { Orders } from '../../orders/entities/orders.entity';
 
 @Entity()
 export class Tacos {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  orderDetailId: number;
 
   @Column({
     type: 'enum',
@@ -18,4 +24,11 @@ export class Tacos {
 
   @Column()
   price: number;
+
+  @OneToOne(() => Ingredients, (ingredient) => ingredient.tacos)
+  @JoinColumn({ name: 'ingredientsId' })
+  ingredients: Ingredients;
+
+  @ManyToOne(() => Orders, (order) => order.tacos)
+  order: Orders;
 }
