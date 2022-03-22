@@ -9,6 +9,9 @@ import {
 } from 'typeorm';
 import { Ingredients } from './ingredients.entity';
 import { Orders } from '../../orders/entities/orders.entity';
+import { Taco } from 'src/taco/entities/taco.entity';
+
+// TODO: Remove type and proce also remove TACOS_TYPE enum
 
 @Entity()
 export class Tacos {
@@ -30,6 +33,12 @@ export class Tacos {
   })
   @JoinColumn({ name: 'ingredientsId' })
   ingredients: Ingredients;
+
+  @OneToOne(() => Ingredients, (ingredient) => ingredient.tacos, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'tacoId' })
+  taco: Taco;
 
   @ManyToOne(() => Orders, (order) => order.tacos)
   order: Orders;

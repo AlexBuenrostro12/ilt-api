@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TacosModule } from './tacos/tacos.module';
 import { OrdersModule } from './orders/orders.module';
+import { TacoModule } from './taco/taco.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { OrdersModule } from './orders/orders.module';
       synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
     }),
     OrdersModule,
+    TacoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
