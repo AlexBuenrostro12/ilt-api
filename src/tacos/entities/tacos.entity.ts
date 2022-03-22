@@ -25,7 +25,9 @@ export class Tacos {
   @Column()
   price: number;
 
-  @OneToOne(() => Ingredients, (ingredient) => ingredient.tacos)
+  @OneToOne(() => Ingredients, (ingredient) => ingredient.tacos, {
+    cascade: true,
+  })
   @JoinColumn({ name: 'ingredientsId' })
   ingredients: Ingredients;
 

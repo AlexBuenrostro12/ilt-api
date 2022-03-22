@@ -1,5 +1,7 @@
-import { IsEnum, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsEnum, IsNumber } from 'class-validator';
 import { ORDERS_STATUS } from 'src/shared/enums/orders.enum';
+import { Tacos } from 'src/tacos/entities/tacos.entity';
 
 export class CreateOrderDto {
   @IsEnum(ORDERS_STATUS)
@@ -7,4 +9,8 @@ export class CreateOrderDto {
 
   @IsNumber()
   readonly total: number;
+
+  @IsArray()
+  @Type(() => Tacos)
+  readonly tacos: Tacos[];
 }

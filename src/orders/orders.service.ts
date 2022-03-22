@@ -14,13 +14,13 @@ export class OrdersService {
 
   findAll() {
     return this.ordesRepository.find({
-      relations: ['tacos'],
+      relations: ['tacos', 'tacos.ingredients'],
     });
   }
 
   async findOne(id: string) {
     const order = await this.ordesRepository.findOne(id, {
-      relations: ['tacos'],
+      relations: ['tacos', 'tacos.ingredients'],
     });
 
     if (!order) {

@@ -13,11 +13,15 @@ export class TacosService {
   ) {}
 
   findAll() {
-    return this.tacosRepository.find();
+    return this.tacosRepository.find({
+      relations: ['ingredients'],
+    });
   }
 
   async findOne(id: string) {
-    const taco = await this.tacosRepository.findOne(id);
+    const taco = await this.tacosRepository.findOne(id, {
+      relations: ['ingredients'],
+    });
 
     if (!taco) {
       throw new NotFoundException(`Taco #${id} not found`);

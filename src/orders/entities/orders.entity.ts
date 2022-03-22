@@ -17,6 +17,8 @@ export class Orders {
   @Column()
   total: number;
 
-  @OneToMany(() => Tacos, (taco) => taco.order)
+  @OneToMany(() => Tacos, (taco) => taco.order, {
+    cascade: true,
+  })
   tacos: Tacos[];
 }
