@@ -7,6 +7,15 @@ export class Orders {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: false })
+  salsaVerde: boolean;
+
+  @Column({ default: false })
+  salsaRoja: boolean;
+
+  @Column({ default: false })
+  rabanos: boolean;
+
   @Column({
     type: 'enum',
     enum: ORDERS_STATUS,
